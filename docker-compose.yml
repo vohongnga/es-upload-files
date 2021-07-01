@@ -1,0 +1,40 @@
+version: '3'
+services:
+  web:
+    image: nginx:1.20.0-alpine
+    working_dir: /var/www
+    container_name: validate_web
+    volumes:
+      - ./:/var/www
+      - ./docker/vhost.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8086:81
+    networks:
+      - app-network
+  app:
+    image: tuanes/laravel_812
+    container_name: validate_app
+    volumes:
+      - ./docker/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./:/var/www
+    networks:
+      - app-network
+  db:
+    image: mysql:8.0
+    container_name: validate_db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - "MYSQL_ROOT_PASSWORD=password"
+    ports:
+      - "33067:3307"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  mysql-data: {}
