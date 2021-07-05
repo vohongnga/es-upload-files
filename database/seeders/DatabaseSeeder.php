@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\Hash;
+use DB;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,6 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+       $this->call([
+           UserSeeder::class
+       ]);
+       DB::table('users')->insert([
+           'username'=>'ngavo',
+           'password'=>Hash::make('11111111'),
+           'role_id'=>1,
+           'remember_token'=>''
+       ]);
     }
 }

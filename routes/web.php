@@ -23,7 +23,19 @@ Route::get('/', function () {
     }
 });
 
-Route::get('/form',[Controller::class,'index']);
+Route::get('/form',[Controller::class,'index'])->middleware('auth')->name('form');
 Route::post('/form', [Controller::class,'store'])->name('form.post');
 Route::get('/upload',[Controller::class,'showForm']);
 Route::post('/upload',[Controller::class,'uploadFiles'])->name('form.upload');
+
+Route::get('/login',[Controller::class,'login'])->name('lo');
+// Route::post('/login',[Controller::class,'postLogin'])->name('login');
+
+Route::get('/home',[Controller::class,'home'])->middleware('auth')->name('home');
+Route::get('/admin',[Controller::class,'admin'])->middleware('auth','auth.admin')->name('admin');
+Route::get('/logout',[Controller::class,'logout'])->name('logout');
+Route::get('/setcookie',[Controller::class,'setCookie']);
+Route::get('/getcookie',[Controller::class,'getCookie']);
+
+Route::post('/login',[Controller::class,'postLogin1'])->name('login1');
+
